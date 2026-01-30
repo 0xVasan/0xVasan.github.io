@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Pixel Add to Cart with Form</title>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '41802430634171');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=41802430634171&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<style>
+    .big-button {
+        width: 300px;
+        height: 80px;
+        font-size: 24px;
+        margin: 20px;
+        cursor: pointer;
+        border-radius: 8px;
+        border: none;
+        color: white;
+        font-weight: bold;
+    }
+    #addToCartButton {
+        background-color: #4CAF50;
+    }
+    #addToWishlistButton {
+        background-color: #2196F3;
+    }
+    #purchaseButton {
+        background-color: #FF9800;
+    }
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+    }
+</style>
+
+</head>
+<body>
+    
+    <h1>Facebook Pixel Event Test</h1>
+    <p>Click any button below to trigger Facebook Pixel events:</p>
+    
+    <div class="button-container">
+        <button type="button" id="addToCartButton" class="big-button">Add to Cart</button>
+        <button type="button" id="addToWishlistButton" class="big-button">Add to Wishlist</button>
+        <button type="button" id="purchaseButton" class="big-button">Purchase</button>
+    </div>
+
+    <!-- JavaScript to trigger Facebook Pixel events -->
+    <script>
+        // Function to generate random USD amount between 10 and 500
+        function getRandomAmount() {
+            return (Math.random() * (500 - 10) + 10).toFixed(2);
+        }
+
+        document.getElementById('addToCartButton').addEventListener('click', function() {
+            const randomValue = getRandomAmount();
+            
+            fbq('track', 'AddToCart', {
+                content_name: 'Test Product',
+                content_category: 'Example Category',
+                content_ids: ['1234'],
+                content_type: 'product',
+                value: randomValue,
+                currency: 'USD'
+            });
+            alert('AddToCart event sent with value: $' + randomValue);
+        });
+
+        document.getElementById('addToWishlistButton').addEventListener('click', function() {
+            const randomValue = getRandomAmount();
+            
+            fbq('track', 'AddToWishlist', {
+                content_name: 'Test Product',
+                content_category: 'Example Category',
+                content_ids: ['1234'],
+                content_type: 'product',
+                value: randomValue,
+                currency: 'USD'
+            });
+            alert('AddToWishlist event sent with value: $' + randomValue);
+        });
+
+        document.getElementById('purchaseButton').addEventListener('click', function() {
+            const randomValue = getRandomAmount();
+            
+            fbq('track', 'Purchase', {
+                content_name: 'Test Product',
+                content_category: 'Example Category',
+                content_ids: ['1234'],
+                content_type: 'product',
+                value: randomValue,
+                currency: 'USD'
+            });
+            alert('Purchase event sent with value: $' + randomValue);
+        });
+    </script>
+</body>
+</html>
