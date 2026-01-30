@@ -50,6 +50,21 @@ src="https://www.facebook.com/tr?id=41802430634171&ev=PageView&noscript=1"
         align-items: center;
         margin-top: 30px;
     }
+    .pixel-override-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px;
+    }
+    #pixelIdInput {
+        width: 300px;
+        height: 40px;
+        font-size: 16px;
+        padding: 8px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
 </style>
 
 </head>
@@ -57,6 +72,11 @@ src="https://www.facebook.com/tr?id=41802430634171&ev=PageView&noscript=1"
     
     <h1>Facebook Pixel Event Test</h1>
     <p>Click any button below to trigger Facebook Pixel events:</p>
+    
+    <div class="pixel-override-container">
+        <label for="pixelIdInput">Override Pixel ID (optional):</label>
+        <input type="text" id="pixelIdInput" placeholder="Enter custom Pixel ID">
+    </div>
     
     <div class="button-container">
         <button type="button" id="addToCartButton" class="big-button">Add to Cart</button>
@@ -66,12 +86,27 @@ src="https://www.facebook.com/tr?id=41802430634171&ev=PageView&noscript=1"
 
     <!-- JavaScript to trigger Facebook Pixel events -->
     <script>
+        // Track if custom pixel has been initialized
+        let customPixelInitialized = false;
+        
+        // Function to initialize custom pixel ID if provided
+        function initializeCustomPixel() {
+            const customPixelId = document.getElementById('pixelIdInput').value.trim();
+            if (customPixelId && !customPixelInitialized) {
+                fbq('init', customPixelId);
+                customPixelInitialized = true;
+                return customPixelId;
+            }
+            return null;
+        }
+        
         // Function to generate random USD amount between 10 and 500
         function getRandomAmount() {
             return (Math.random() * (500 - 10) + 10).toFixed(2);
         }
 
         document.getElementById('addToCartButton').addEventListener('click', function() {
+            const customPixelId = initializeCustomPixel();
             const randomValue = getRandomAmount();
             
             fbq('track', 'AddToCart', {
@@ -82,10 +117,16 @@ src="https://www.facebook.com/tr?id=41802430634171&ev=PageView&noscript=1"
                 value: randomValue,
                 currency: 'USD'
             });
-            alert('AddToCart event sent with value: $' + randomValue);
+            
+            let message = 'AddToCart event sent with value: $' + randomValue;
+            if (customPixelId) {
+                message += '\nUsing custom Pixel ID: ' + customPixelId;
+            }
+            alert(message);
         });
 
         document.getElementById('addToWishlistButton').addEventListener('click', function() {
+            const customPixelId = initializeCustomPixel();
             const randomValue = getRandomAmount();
             
             fbq('track', 'AddToWishlist', {
@@ -96,10 +137,16 @@ src="https://www.facebook.com/tr?id=41802430634171&ev=PageView&noscript=1"
                 value: randomValue,
                 currency: 'USD'
             });
-            alert('AddToWishlist event sent with value: $' + randomValue);
+            
+            let message = 'AddToWishlist event sent with value: $' + randomValue;
+            if (customPixelId) {
+                message += '\nUsing custom Pixel ID: ' + customPixelId;
+            }
+            alert(message);
         });
 
         document.getElementById('purchaseButton').addEventListener('click', function() {
+            const customPixelId = initializeCustomPixel();
             const randomValue = getRandomAmount();
             
             fbq('track', 'Purchase', {
@@ -110,7 +157,12 @@ src="https://www.facebook.com/tr?id=41802430634171&ev=PageView&noscript=1"
                 value: randomValue,
                 currency: 'USD'
             });
-            alert('Purchase event sent with value: $' + randomValue);
+            
+            let message = 'Purchase event sent with value: $' + randomValue;
+            if (customPixelId) {
+                message += '\nUsing custom Pixel ID: ' + customPixelId;
+            }
+            alert(message);
         });
     </script>
 </body>
